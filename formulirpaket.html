@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Paket Les</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-image: url(../img/eren.png); /* Ganti dengan path gambar yang Anda inginkan */
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #fff;
+      padding: 50px 20px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.5em;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #ffffff;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+    }
+
+    form {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 40px 50px;
+      border-radius: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.1em;
+      color: #ddd;
+    }
+
+    .input-container {
+      margin-bottom: 20px;
+    }
+
+    .input-container input,
+    .input-container select {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background-color: #333;
+      color: #fff;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    .input-container input:focus,
+    .input-container select:focus {
+      border-color: #00d1b2;
+      outline: none;
+    }
+
+    .input-container button {
+      width: 100%;
+      padding: 14px;
+      background-color: #00d1b2;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: all 0.3s ease;
+    }
+
+    .input-container button:hover {
+      background-color: #00b89c;
+    }
+
+    .btn-submit {
+      background-color: #00d1b2;
+      color: #ffffff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      display: block;
+      margin: 20px auto;
+      text-align: center;
+      font-size: 1.2em;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #00b89c;
+    }
+
+    .harga-container {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+      margin-top: 30px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .harga-container p {
+      margin: 5px 0;
+      font-size: 1.1em;
+      color: #ddd;
+    }
+
+    .harga-container span {
+      font-weight: bold;
+      font-size: 1.6em;
+      display: block;
+      margin-top: 10px;
+      color: #00d1b2;
+      transition: all 0.3s ease;
+    }
+
+    .harga-container span:focus,
+    .harga-container span:hover {
+      color: #00b89c;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 768px) {
+      form {
+        padding: 30px 20px;
+      }
+
+      .harga-container {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 2em;
+      }
+    }
+
+    /* Popup styles */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.5em;
+      text-align: center;
+    }
+
+    #popup .popup-content {
+      background-color: rgba(0, 0, 0, 0.9);
+      padding: 40px;
+      border-radius: 10px;
+    }
+
+    #popup button {
+      background-color: #00d1b2;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <form id="pendaftaran">
+    <h2>Daftar Paket Pinter Bersama</h2>
+
+    <label for="nama">Nama Lengkap</label>
+    <div class="input-container">
+      <input type="text" id="nama" placeholder="Nama Anda" required>
+      <div id="nama-error" class="error"></div>
+    </div>
+
+    <label for="email">Email</label>
+    <div class="input-container">
+      <input type="email" id="email" placeholder="Email Anda" required>
+      <div id="email-error" class="error"></div>
+    </div>
+
+    <label for="telepon">Nomor WhatsApp Aktif</label>
+    <div class="input-container">
+      <input type="text" id="telepon" placeholder="Nomor Telepon Anda" required>
+      <div id="telepon-error" class="error"></div>
+    </div>
+
+    <label for="kelas">Pilih Kelas</label>
+    <div class="input-container">
+      <select id="kelas" name="kelas" required onchange="hitungHarga()">
+        <option value="">Pilih Kelas</option>
+        <option value="Offline">Kelas Offline</option>
+        <option value="Online">Kelas Online</option>
+      </select>
+    </div>
+
+    <label for="mata_pelajaran">Mata Pelajaran</label>
+    <div class="input-container">
+      <select id="mata_pelajaran" name="mata_pelajaran" required onchange="hitungHarga()">
+        <option value="">Pilih Mata Pelajaran</option>
+        <option value="IPA">Paket IPA</option>
+        <option value="IPS">Paket IPS</option>
+        <option value="Bahasa Inggris">Paket Bahasa Inggris</option>
+      </select>
+    </div>
+
+    <label for="durasi">Durasi Paket</label>
+    <div class="input-container">
+      <select id="durasi" name="durasi" required onchange="hitungHarga()">
+        <option value="">Pilih Durasi</option>
+        <option value="1">1 Bulan</option>
+        <option value="3">3 Bulan</option>
+        <option value="6">6 Bulan</option>
+      </select>
+    </div>
+
+    <label for="kode-kupon">Kode Kupon</label>
+    <div class="input-container">
+      <input type="text" id="kode-kupon" placeholder="Masukkan jika ada" oninput="hitungHarga()">
+    </div>
+
+    <div class="harga-container">
+      <p>Harga</p>
+      <span id="harga-awal">Rp. 0</span>
+      <p>Diskon</p>
+      <span id="diskon">Rp. 0</span>
+      <p>Total Harga</p>
+      <span id="harga-total">Rp. 0</span>
+    </div>
+
+    <button type="button" class="btn-submit" onclick="submitData()">Submit Data</button>
+  </form>
+
+  <div id="popup">
+    <div class="popup-content">
+      <p>Apakah kamu sudah yakin data yang dimasukkan benar?</p>
+      <button onclick="confirmData()">Ya</button>
+      <button onclick="cancelData()">Batal</button>
+    </div>
+  </div>
+
+  <script>
+    function formatRupiah(angka) {
+      const numberString = angka.toString();
+      const split = numberString.split(',');
+      const sisa = split[0].length % 3;
+      let rupiah = split[0].substr(0, sisa);
+      const ribuan = split[0].substr(sisa).match(/\d{3}/g);
+
+      if (ribuan) {
+        const separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+      }
+
+      return 'Rp. ' + rupiah;
+    }
+
+    function hitungHarga() {
+      let hargaAwal = 0;
+      let diskon = 0;
+
+      const kelas = document.getElementById('kelas').value;
+      const mataPelajaran = document.getElementById('mata_pelajaran').value;
+      const durasi = document.getElementById('durasi').value;
+      const kodeKupon = document.getElementById('kode-kupon').value;
+
+      if (kelas === 'Offline') {
+        hargaAwal = 200000;
+      } else if (kelas === 'Online') {
+        hargaAwal = 150000;
+      }
+
+      if (mataPelajaran === 'IPA') {
+        hargaAwal += 50000;
+      } else if (mataPelajaran === 'IPS') {
+        hargaAwal += 40000;
+      }
+
+      if (durasi === '3') {
+        hargaAwal *= 3;
+      } else if (durasi === '6') {
+        hargaAwal *= 6;
+      }
+
+      if (kodeKupon === 'DISKON10') {
+        diskon = hargaAwal * 0.1;
+      }
+
+      const totalHarga = hargaAwal - diskon;
+
+      document.getElementById('harga-awal').textContent = formatRupiah(hargaAwal);
+      document.getElementById('diskon').textContent = formatRupiah(diskon);
+      document.getElementById('harga-total').textContent = formatRupiah(totalHarga);
+    }
+
+    function submitData() {
+      document.getElementById('popup').style.display = 'flex';
+    }
+
+    function confirmData() {
+      window.location.href = "checkout-completed.html"; 
+      document.getElementById('popup').style.display = 'none';
+    }
+
+    function cancelData() {
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+#confirmation {
+    display: none;
+    position: fixed; /* Fix it to the center of the screen */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center it exactly */
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
+  
+  #confirmation button {
+    padding: 15px 30px; /* Increase padding for larger buttons */
+    font-size: 1.2em; /* Adjust font size */
+  }
+  
+  @media (max-width: 768px) {
+    #confirmation {
+      width: 90%; /* Adjust for smaller screens */
+    }
+  }
+  
