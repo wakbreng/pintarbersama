@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: 'Helvetica Neue', Arial, sans-serif;
-      background-image: url(../img/eren.png); /* Ganti dengan path gambar yang Anda inginkan */
+      background-image: url(../img/eren.png); 
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -184,25 +184,25 @@
 <body>
   <form id="pendaftaran">
     <h2>Daftar Paket Pinter Bersama</h2>
-
+  
     <label for="nama">Nama Lengkap</label>
     <div class="input-container">
       <input type="text" id="nama" placeholder="Nama Anda" required>
       <div id="nama-error" class="error"></div>
     </div>
-
+  
     <label for="email">Email</label>
     <div class="input-container">
       <input type="email" id="email" placeholder="Email Anda" required>
       <div id="email-error" class="error"></div>
     </div>
-
+  
     <label for="telepon">Nomor WhatsApp Aktif</label>
     <div class="input-container">
       <input type="text" id="telepon" placeholder="Nomor Telepon Anda" required>
       <div id="telepon-error" class="error"></div>
     </div>
-
+  
     <label for="kelas">Pilih Kelas</label>
     <div class="input-container">
       <select id="kelas" name="kelas" required onchange="hitungHarga()">
@@ -210,8 +210,9 @@
         <option value="Offline">Kelas Offline</option>
         <option value="Online">Kelas Online</option>
       </select>
+      <div id="kelas-error" class="error"></div>
     </div>
-
+  
     <label for="mata_pelajaran">Mata Pelajaran</label>
     <div class="input-container">
       <select id="mata_pelajaran" name="mata_pelajaran" required onchange="hitungHarga()">
@@ -220,8 +221,20 @@
         <option value="IPS">Paket IPS</option>
         <option value="Bahasa Inggris">Paket Bahasa Inggris</option>
       </select>
+      <div id="mata-pelajaran-error" class="error"></div>
     </div>
 
+    <label for="mata_pelajaran">Metode Pembayaran</label>
+    <div class="input-container">
+      <select id="mata_pelajaran" name="mata_pelajaran" required onchange="hitungHarga()">
+        <option value="">...</option>
+        <option value="IPA">Shopeepay</option>
+        <option value="IPS">Qris</option>
+        <option value="Bahasa Inggris">BCA</option>
+      </select>
+      <div id="mata-pelajaran-error" class="error"></div>
+    </div>
+  
     <label for="durasi">Durasi Paket</label>
     <div class="input-container">
       <select id="durasi" name="durasi" required onchange="hitungHarga()">
@@ -230,13 +243,14 @@
         <option value="3">3 Bulan</option>
         <option value="6">6 Bulan</option>
       </select>
+      <div id="durasi-error" class="error"></div>
     </div>
-
+  
     <label for="kode-kupon">Kode Kupon</label>
     <div class="input-container">
       <input type="text" id="kode-kupon" placeholder="Masukkan jika ada" oninput="hitungHarga()">
     </div>
-
+  
     <div class="harga-container">
       <p>Harga</p>
       <span id="harga-awal">Rp. 0</span>
@@ -245,17 +259,65 @@
       <p>Total Harga</p>
       <span id="harga-total">Rp. 0</span>
     </div>
-
+  
     <button type="button" class="btn-submit" onclick="submitData()">Submit Data</button>
   </form>
-
-  <div id="popup">
+  
+  <div id="popup" style="display:none;">
     <div class="popup-content">
       <p>Apakah kamu sudah yakin data yang dimasukkan benar?</p>
       <button onclick="confirmData()">Ya</button>
       <button onclick="cancelData()">Batal</button>
     </div>
   </div>
+  
+  <script>
+  function submitData() {
+    const fields = [
+      { id: 'nama', message: 'Nama lengkap wajib diisi.' },
+      { id: 'email', message: 'Email wajib diisi.' },
+      { id: 'telepon', message: 'Nomor WhatsApp wajib diisi.' },
+      { id: 'kelas', message: 'Pilih salah satu kelas.' },
+      { id: 'mata_pelajaran', message: 'Pilih salah satu mata pelajaran.' },
+      { id: 'durasi', message: 'Pilih salah satu durasi.' },
+    ];
+  
+    let isValid = true;
+  
+    // Reset semua pesan error
+    fields.forEach((field) => {
+      const errorDiv = document.getElementById(`${field.id}-error`);
+      errorDiv.textContent = '';
+    });
+  
+    // Validasi input
+    fields.forEach((field) => {
+      const input = document.getElementById(field.id);
+      if (!input.value.trim()) {
+        const errorDiv = document.getElementById(`${field.id}-error`);
+        errorDiv.textContent = field.message;
+        errorDiv.style.color = 'red';
+        isValid = false;
+      }
+    });
+  
+    // Jika valid, tampilkan popup
+    if (isValid) {
+      document.getElementById('popup').style.display = 'block';
+    }
+  }
+  
+  function confirmData() {
+    alert('Data berhasil dikirim!');
+    document.getElementById('pendaftaran').reset();
+    document.getElementById('popup').style.display = 'none';
+  }
+  
+  function cancelData() {
+    document.getElementById('popup').style.display = 'none';
+  }
+  </script>
+  
 
   <script>
     function formatRupiah(angka) {
@@ -304,6 +366,10 @@
         diskon = hargaAwal * 0.1;
       }
 
+      if (kodeKupon === 'wakbreng') {
+        diskon = hargaAwal * 0.5;
+      }
+
       const totalHarga = hargaAwal - diskon;
 
       document.getElementById('harga-awal').textContent = formatRupiah(hargaAwal);
@@ -326,3 +392,4 @@
   </script>
 </body>
 </html>
+
